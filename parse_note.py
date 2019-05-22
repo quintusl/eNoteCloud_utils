@@ -191,8 +191,8 @@ if __name__ == "__main__":
 
     with tarfile.open(options.filename, "r") as t:
         index_files = [ t.extractfile(f) for f in t.getmembers() 
-                        if f.name.endswith('index.quill_data') ]
-        if len(index_files) != 1:
+                        if f.name.endswith('index') ]
+        if len(index_files) < 1:
             raise ValueError('Not a Quill file')
         q = QuillIndex(index_files[0])
         print q
@@ -200,7 +200,7 @@ if __name__ == "__main__":
         for page_number, page_uuid in enumerate(q.page_uuids):
             if options.page is not None and options.page != str(page_number+1):
                 continue
-            page_file = t.extractfile(notebook_dir+'/page_'+page_uuid+'.quill_data')
+            page_file = t.extractfile(notebook_dir+'/page_'+page_uuid+'.page')
             qp = QuillPage(page_file, page_number)
             try:
                 output_filename = options.output % (page_number+1)
